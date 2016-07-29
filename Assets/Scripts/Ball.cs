@@ -1,18 +1,22 @@
 ﻿using UnityEngine;
 
 [RequireComponent(typeof(Rigidbody))]
+[RequireComponent(typeof(AudioSource))]
 public class Ball : MonoBehaviour
 {
-    public float launchSpeed = 100f;
+    public Vector3 launchVelocity = new Vector3(0f, 0f, 150f);
 
-    private Rigidbody myRigidbody;
+    private new Rigidbody rigidbody;
+
+    private AudioSource audioSource;
 
 	// Use this for initialization
 	void Start ()
     {
-        this.myRigidbody = GetComponent<Rigidbody>();
+        this.rigidbody = GetComponent<Rigidbody>();
+        this.audioSource = GetComponent<AudioSource>();
 
-        this.myRigidbody.velocity = new Vector3(0f, 0f, launchSpeed);
+        LaunchBall();        
     }
 	
 	// Update is called once per frame
@@ -21,4 +25,10 @@ public class Ball : MonoBehaviour
 	
 
 	}
+
+    public void LaunchBall()
+    {
+        this.rigidbody.velocity = launchVelocity;
+        audioSource.Play();
+    }
 }
