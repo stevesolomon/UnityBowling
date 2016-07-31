@@ -4,6 +4,12 @@
 [RequireComponent(typeof(AudioSource))]
 public class Ball : MonoBehaviour
 {
+    public bool InPlay
+    {
+        get;
+        private set;
+    }
+
     public Vector3 launchVelocity = new Vector3(0f, 0f, 150f);
 
     private new Rigidbody rigidbody;
@@ -28,8 +34,21 @@ public class Ball : MonoBehaviour
 
     public void LaunchBall(Vector3 launchVelocity)
     {
-        this.rigidbody.useGravity = true;
-        this.rigidbody.velocity = launchVelocity;
-        audioSource.Play();
+        if (!this.InPlay)
+        {
+            this.InPlay = true;
+
+            this.rigidbody.useGravity = true;
+            this.rigidbody.velocity = launchVelocity;
+            audioSource.Play();
+        }
+    }
+
+    public void MoveStartPosition(float amount)
+    {
+        if (!InPlay)
+        {
+            this.transform.Translate(new Vector3(amount, 0f, 0f));
+        }
     }
 }

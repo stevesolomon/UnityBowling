@@ -16,6 +16,11 @@ public class DragLaunch : MonoBehaviour
             ball = GetComponent<Ball>();
         }
 	}
+
+    public void MoveStart(float amount)
+    {
+        this.ball.MoveStartPosition(amount);
+    }
 	
 	public void DragStart()
     {
@@ -25,6 +30,11 @@ public class DragLaunch : MonoBehaviour
 
     public void DragEnd()
     {
+        if (this.ball.InPlay)
+        {
+            return;
+        }
+
         float dragEndTime = Time.time;
         Vector3 dragEndPosition = Input.mousePosition;
 
