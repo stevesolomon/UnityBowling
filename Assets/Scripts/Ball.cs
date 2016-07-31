@@ -16,7 +16,7 @@ public class Ball : MonoBehaviour
         this.rigidbody = GetComponent<Rigidbody>();
         this.audioSource = GetComponent<AudioSource>();
 
-        LaunchBall();        
+        this.rigidbody.useGravity = false;  
     }
 	
 	// Update is called once per frame
@@ -26,8 +26,9 @@ public class Ball : MonoBehaviour
 
 	}
 
-    public void LaunchBall()
+    public void LaunchBall(Vector3 launchVelocity)
     {
+        this.rigidbody.useGravity = true;
         this.rigidbody.velocity = launchVelocity;
         audioSource.Play();
     }
