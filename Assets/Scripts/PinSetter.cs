@@ -1,4 +1,6 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using System.Linq;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class PinSetter : MonoBehaviour
@@ -7,14 +9,19 @@ public class PinSetter : MonoBehaviour
 
     public Text pinText;
 
-    private Pin[] Pins { get; set; }    
+    public int LastStandingCount { get; private set; }
+
+    private List<Pin> Pins { get; set; } 
 
     private bool CanUpdatePins { get; set; }
+
+    private float LastChangeTime { get; set; }
 
 	// Use this for initialization
 	void Start ()
     {
-        Pins = GameObject.FindObjectsOfType<Pin>();
+        Pins = GameObject.FindObjectsOfType<Pin>().ToList();
+        LastStandingCount = -1;
 
         UpdatePinsStanding();
 
@@ -33,9 +40,13 @@ public class PinSetter : MonoBehaviour
 
     private void UpdatePinsStanding()
     {
-        int pinsStanding = CountStandingPins();
+        LastStandingCount = CountStandingPins();
+        pinText.text = string.Format(pinTextFormat, LastStandingCount);
 
-        pinText.text = string.Format(pinTextFormat, pinsStanding);
+        if (PinsHaveSettled())
+        {
+
+        }
     }
 
     private int CountStandingPins()
@@ -53,12 +64,31 @@ public class PinSetter : MonoBehaviour
         return pinsStanding;
     }
 
+    private bool PinsHaveSettled()
+    {
+        bool pinsHaveSettled = false;
+
+        return pinsHaveSettled;
+    }
+
     void OnTriggerEnter(Collider collider)
     {
         if (collider.gameObject.GetComponent<Ball>())
         {
             CanUpdatePins = true;
             pinText.color = Color.red;
+        }
+    }
+
+    void OnTriggerExit(Collider collider)
+    {
+        Pin pin = collider.gameObject.GetComponent<Pin>();
+
+        if (pin != null)
+        {
+            this.Pins.Remove(pin);
+            Destroy(collider.gameObject);
+            
         }
     }
 }
