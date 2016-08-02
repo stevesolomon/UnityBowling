@@ -3,31 +3,46 @@ using UnityEngine.UI;
 
 public class PinSetter : MonoBehaviour
 {
+    private const string pinTextFormat = "{0} Pins Remaining";
+
     public Text pinText;
 
-    private Pin[] pins;
+    private Pin[] Pins { get; set; }    
 
-    private string pinTextFormat = "{0} Pins Remaining";
+    private bool CanUpdatePins { get; set; }
 
 	// Use this for initialization
 	void Start ()
     {
-        pins = GameObject.FindObjectsOfType<Pin>();
-	}
+        Pins = GameObject.FindObjectsOfType<Pin>();
+
+        UpdatePinsStanding();
+
+        pinText.color = Color.green;
+        CanUpdatePins = false;
+    }
 	
 	// Update is called once per frame
 	void Update ()
     {
-        int pinsStanding = PinsStanding();
-
-        pinText.text = string.Format(pinTextFormat, pinsStanding);
+        if (CanUpdatePins)
+        {
+            UpdatePinsStanding();
+        }
 	}
 
-    private int PinsStanding()
+    private void UpdatePinsStanding()
+    {
+        int pinsStanding = CountStandingPins();
+
+        pinText.text = string.Format(pinTextFormat, pinsStanding);
+    }
+
+    private int CountStandingPins()
     {
         int pinsStanding = 0;
 
-        foreach (var pin in this.pins)
+        foreach (var pin in this.Pins)
         {
             if (pin.IsStanding())
             {
@@ -36,5 +51,14 @@ public class PinSetter : MonoBehaviour
         }
 
         return pinsStanding;
+    }
+
+    void OnTriggerEnter(Collider collider)
+    {
+        if (collider.gameObject.GetComponent<Ball>())
+        {
+            CanUpdatePins = true;
+            pinText.color = Color.red;
+        }
     }
 }
