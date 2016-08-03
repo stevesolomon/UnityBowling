@@ -47,6 +47,6 @@ public class DragLaunch : MonoBehaviour
 
         print("Launch velocity is: " + launchVelocity);
 
-        this.ball.LaunchBall(launchVelocity);
+        this.ball.Launch(launchVelocity);
     }
 }

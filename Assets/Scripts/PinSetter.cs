@@ -11,6 +11,8 @@ public class PinSetter : MonoBehaviour
 
     public float settleTimeSeconds = 3f;
 
+    public Ball ball;
+
     public int LastStandingCount { get; private set; }
 
     private List<Pin> Pins { get; set; } 
@@ -27,6 +29,11 @@ public class PinSetter : MonoBehaviour
         
         pinText.color = Color.green;
         CanUpdatePins = false;
+
+        if (ball == null)
+        {
+            this.ball = GameObject.FindObjectOfType<Ball>();
+        }
     }
 	
 	// Update is called once per frame
@@ -79,6 +86,9 @@ public class PinSetter : MonoBehaviour
     {
         LastStandingCount = -1;
         pinText.color = Color.green;
+        this.CanUpdatePins = false;
+
+        this.ball.Reset();
     }
 
     void OnTriggerEnter(Collider collider)

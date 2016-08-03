@@ -16,13 +16,17 @@ public class Ball : MonoBehaviour
 
     private AudioSource audioSource;
 
+    private Vector3 OriginalPosition { get; set; }
+
 	// Use this for initialization
 	void Start ()
     {
         this.rigidbody = GetComponent<Rigidbody>();
         this.audioSource = GetComponent<AudioSource>();
 
-        this.rigidbody.useGravity = false;  
+        this.rigidbody.useGravity = false;
+
+        this.OriginalPosition = this.transform.position; 
     }
 	
 	// Update is called once per frame
@@ -32,7 +36,7 @@ public class Ball : MonoBehaviour
 
 	}
 
-    public void LaunchBall(Vector3 launchVelocity)
+    public void Launch(Vector3 launchVelocity)
     {
         if (!this.InPlay)
         {
@@ -42,6 +46,16 @@ public class Ball : MonoBehaviour
             this.rigidbody.velocity = launchVelocity;
             audioSource.Play();
         }
+    }
+
+    public void Reset()
+    {
+        this.InPlay = false;
+
+        this.transform.position = this.OriginalPosition;
+        this.rigidbody.velocity = Vector3.zero;
+        this.rigidbody.rotation = Quaternion.identity;
+        this.rigidbody.useGravity = false;
     }
 
     public void MoveStartPosition(float amount)

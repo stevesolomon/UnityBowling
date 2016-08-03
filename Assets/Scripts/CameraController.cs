@@ -24,7 +24,7 @@ public class CameraController : MonoBehaviour
     private void UpdateCameraPosition()
     {
         //As long as we're not at the end of the lane, keep following the ball.
-        if (this.transform.position.z <= 1700)
+        if (this.ball.transform.position.z <= (1700 - this.ballOffset.z))
         {
             this.camera.transform.position = this.ball.transform.position + this.ballOffset;
         }
