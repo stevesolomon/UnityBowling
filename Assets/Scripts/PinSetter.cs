@@ -53,6 +53,14 @@ public class PinSetter : MonoBehaviour
     public void RaisePins()
     {
         print("Raising Pins");
+
+        foreach (var pin in Pins)
+        {
+            if (pin.IsStanding())
+            {
+                pin.transform.Translate(new Vector3(0f, distanceToRaise, 0f), Space.World);
+            }
+        }
     }
 
     /// <summary>
@@ -61,6 +69,14 @@ public class PinSetter : MonoBehaviour
     public void LowerPins()
     {
         print("Lowering Pins");
+
+        foreach (var pin in Pins)
+        {
+            if (pin.IsStanding())
+            {
+                pin.transform.Translate(new Vector3(0f, -distanceToRaise, 0f), Space.World);
+            }
+        }
     }
 
     /// <summary>
@@ -128,12 +144,12 @@ public class PinSetter : MonoBehaviour
 
     void OnTriggerExit(Collider collider)
     {
-        Pin pin = collider.gameObject.GetComponent<Pin>();
+        Pin pin = collider.gameObject.GetComponentInParent<Pin>();
 
         if (pin != null)
         {
             this.Pins.Remove(pin);
-            Destroy(collider.gameObject);            
+            Destroy(collider.transform.parent.gameObject);            
         }
     }
 }
