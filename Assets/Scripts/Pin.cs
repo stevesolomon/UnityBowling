@@ -4,10 +4,12 @@ public class Pin : MonoBehaviour
 {
     public float standingThresholdDegrees = 5f;
 
+    public new Rigidbody rigidbody;
+
 	// Use this for initialization
 	void Start ()
     {
-	
+        this.rigidbody = GetComponent<Rigidbody>();
 	}
 
     public bool IsStanding()
@@ -24,5 +26,17 @@ public class Pin : MonoBehaviour
         }
 
         return false;
+    }
+
+    public void Raise(float distance)
+    {
+        this.transform.Translate(new Vector3(0f, distance, 0f), Space.World);
+        this.rigidbody.isKinematic = true;
+    }
+
+    public void Lower(float distance)
+    {
+        this.transform.Translate(new Vector3(0f, -distance, 0f), Space.World);
+        this.rigidbody.isKinematic = false;
     }
 }

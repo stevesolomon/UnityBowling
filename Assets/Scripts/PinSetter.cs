@@ -58,7 +58,7 @@ public class PinSetter : MonoBehaviour
         {
             if (pin.IsStanding())
             {
-                pin.transform.Translate(new Vector3(0f, distanceToRaise, 0f), Space.World);
+                pin.Raise(distanceToRaise);
             }
         }
     }
@@ -74,7 +74,7 @@ public class PinSetter : MonoBehaviour
         {
             if (pin.IsStanding())
             {
-                pin.transform.Translate(new Vector3(0f, -distanceToRaise, 0f), Space.World);
+                pin.Lower(distanceToRaise);
             }
         }
     }
