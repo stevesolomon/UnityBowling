@@ -11,6 +11,8 @@ public class PinSetter : MonoBehaviour
 
     public float settleTimeSeconds = 3f;
 
+    public float distanceToRaise = 40f;
+
     public Ball ball;
 
     public int LastStandingCount { get; private set; }
@@ -44,6 +46,30 @@ public class PinSetter : MonoBehaviour
             UpdatePinsStanding();
         }
 	}
+
+    /// <summary>
+    /// Raises only the standing pins by distanceToRaise.
+    /// </summary>
+    public void RaisePins()
+    {
+        print("Raising Pins");
+    }
+
+    /// <summary>
+    /// Lowers currently raised pins.
+    /// </summary>
+    public void LowerPins()
+    {
+        print("Lowering Pins");
+    }
+
+    /// <summary>
+    /// Creates a new set of pins.
+    /// </summary>
+    public void RenewPins()
+    {
+        print("Renewing Pins");
+    }
 
     private void UpdatePinsStanding()
     {
