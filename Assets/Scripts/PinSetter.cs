@@ -29,10 +29,8 @@ public class PinSetter : MonoBehaviour
 	void Start ()
     {
         Pins = GameObject.FindObjectsOfType<Pin>().ToList();
-        LastStandingCount = -1;
-        
-        pinText.color = Color.green;
-        CanUpdatePins = false;
+
+        InitializePinCounts();
 
         if (ball == null)
         {
@@ -89,6 +87,19 @@ public class PinSetter : MonoBehaviour
         print("Renewing Pins");
 
         Instantiate(this.pinSet, new Vector3(0f, 40f, 1829f), Quaternion.identity);
+
+        InitializePinCounts();
+    }
+
+    private void InitializePinCounts()
+    {
+        Pins = GameObject.FindObjectsOfType<Pin>().ToList();
+        LastStandingCount = -1;
+        CanUpdatePins = false;
+
+        int standingPins = CountStandingPins();
+        pinText.color = Color.green;
+        pinText.text = string.Format(pinTextFormat, standingPins);
     }
 
     private void UpdatePinsStanding()
