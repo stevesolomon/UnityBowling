@@ -88,7 +88,7 @@ public class PinSetter : MonoBehaviour
     {
         print("Renewing Pins");
 
-        Instantiate(this.pinSet, new Vector3(0f, 0f, 1829f), Quaternion.identity);
+        Instantiate(this.pinSet, new Vector3(0f, 40f, 1829f), Quaternion.identity);
     }
 
     private void UpdatePinsStanding()
