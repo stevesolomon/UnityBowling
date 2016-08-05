@@ -15,6 +15,8 @@ public class PinSetter : MonoBehaviour
 
     public Ball ball;
 
+    public GameObject pinSet;
+
     public int LastStandingCount { get; private set; }
 
     private List<Pin> Pins { get; set; } 
@@ -85,6 +87,8 @@ public class PinSetter : MonoBehaviour
     public void RenewPins()
     {
         print("Renewing Pins");
+
+        Instantiate(this.pinSet, new Vector3(0f, 0f, 1829f), Quaternion.identity);
     }
 
     private void UpdatePinsStanding()
