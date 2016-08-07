@@ -34,5 +34,27 @@ public class ActionControllerTests
 
         Assert.AreEqual(ActionResponse.EndTurn, response);
     }
-    
+
+    [Test]
+    public void BowlStandardFirstFrameReturnsTidy()
+    {
+        ActionResponse response = this.actionController.Bowl(7);
+        Assert.AreEqual(ActionResponse.Tidy, response);
+    }
+
+    [Test]
+    public void BowlStandardLastFrameReturnsEndTurn()
+    {
+        this.actionController.Bowl(2);
+        ActionResponse response = this.actionController.Bowl(3);
+        Assert.AreEqual(ActionResponse.EndTurn, response);
+    }
+
+    [Test]
+    public void BowlSpareReturnsEndTurn()
+    {
+        this.actionController.Bowl(2);
+        ActionResponse response = this.actionController.Bowl(8);
+        Assert.AreEqual(ActionResponse.EndTurn, response);
+    }
 }
