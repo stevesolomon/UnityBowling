@@ -136,6 +136,35 @@ public class ActionControllerTests
     }
 
     [Test]
+    public void BowlLastFrameGutterBallOnFirstRollReturnsTidy()
+    {
+        int[] bowls = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+
+        foreach (int bowl in bowls)
+        {
+            this.actionController.Bowl(bowl);
+        }
+        
+        ActionResponse response = this.actionController.Bowl(0);
+        Assert.AreEqual(ActionResponse.Tidy, response);
+    }
+
+    [Test]
+    public void BowlLastFrameGutterBallOnSecondRollNoExtraReturnsEndGame()
+    {
+        int[] bowls = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+
+        foreach (int bowl in bowls)
+        {
+            this.actionController.Bowl(bowl);
+        }
+
+        this.actionController.Bowl(8);
+        ActionResponse response = this.actionController.Bowl(0);
+        Assert.AreEqual(ActionResponse.EndGame, response);
+    }
+
+    [Test]
     public void BowlLastFrameStrikeFirstRollAndThenNormalReturnsTidy()
     {
         int[] bowls = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
