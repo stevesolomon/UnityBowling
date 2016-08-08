@@ -119,4 +119,34 @@ public class ActionControllerTests
         ActionResponse response = this.actionController.Bowl(1);
         Assert.AreEqual(ActionResponse.EndGame, response);
     }
+
+    [Test]
+    public void BowlLastFrameSpareSecondRollReturnsReset()
+    {
+        int[] bowls = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+
+        foreach (int bowl in bowls)
+        {
+            this.actionController.Bowl(bowl);
+        }
+
+        this.actionController.Bowl(8);
+        ActionResponse response = this.actionController.Bowl(2);
+        Assert.AreEqual(ActionResponse.Reset, response);
+    }
+
+    [Test]
+    public void BowlLastFrameStrikeFirstRollAndThenNormalReturnsTidy()
+    {
+        int[] bowls = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+
+        foreach (int bowl in bowls)
+        {
+            this.actionController.Bowl(bowl);
+        }
+
+        this.actionController.Bowl(10);
+        ActionResponse response = this.actionController.Bowl(5);
+        Assert.AreEqual(ActionResponse.Tidy, response);
+    }
 }

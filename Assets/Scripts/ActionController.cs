@@ -43,8 +43,17 @@ public class ActionController
         {
             if (Roll21Awarded())
             {
+                if (IsStrike() || IsSpare(this.bowlIndex))
+                {
+                    response = ActionResponse.Reset;
+                }
+                else
+                {
+                    response = ActionResponse.Tidy;
+                }
+
                 this.bowlIndex++;
-                return ActionResponse.Reset;
+                return response;
             }
             else if (this.bowlIndex == 20 - 1)
             {
@@ -73,5 +82,15 @@ public class ActionController
     private bool Roll21Awarded()
     {
         return bowlStats[19 - 1] + bowlStats[20 - 1] >= 10;
+    }
+
+    private bool IsStrike()
+    {
+        return bowlStats[this.bowlIndex] == 10;
+    }
+
+    private bool IsSpare(int finalIndex)
+    {
+        return bowlStats[finalIndex] + bowlStats[finalIndex - 1] == 10;
     }
 }
