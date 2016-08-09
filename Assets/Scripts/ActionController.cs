@@ -66,6 +66,7 @@ public class ActionController
 
         if (pinsDropped == 10)
         {
+            this.bowlIndex += (this.bowlIndex % 2) == 0 ? 2 : 1;
             response = ActionResponse.EndTurn;
         }
 

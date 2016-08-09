@@ -178,4 +178,61 @@ public class ActionControllerTests
         ActionResponse response = this.actionController.Bowl(5);
         Assert.AreEqual(ActionResponse.Tidy, response);
     }
+
+    [Test]
+    public void BowlTwoFramesStrikeOnLastRollOfFirstFrameReturnsEndTurn()
+    {
+        int[] bowls = { 0, 10, 5 };
+
+        foreach (int bowl in bowls)
+        {
+            this.actionController.Bowl(bowl);
+        }
+        
+        ActionResponse response = this.actionController.Bowl(1);
+        Assert.AreEqual(ActionResponse.EndTurn, response);
+    }
+
+    [Test]
+    public void BowlTwoFramesStrikeOnFirstRollOfFirstFrameReturnsTidy()
+    {
+        int[] bowls = { 10, 0, 5 };
+
+        foreach (int bowl in bowls)
+        {
+            this.actionController.Bowl(bowl);
+        }
+
+        ActionResponse response = this.actionController.Bowl(1);
+        Assert.AreEqual(ActionResponse.Tidy, response);
+    }
+
+    [Test]
+    public void BowlThreeStrikesInARowReturnsEndTurn()
+    {
+        int[] bowls = { 10, 10 };
+
+        foreach (int bowl in bowls)
+        {
+            this.actionController.Bowl(bowl);
+        }
+
+        ActionResponse response = this.actionController.Bowl(10);
+        Assert.AreEqual(ActionResponse.EndTurn, response);
+    }
+
+    [Test]
+    public void ThreeStrikesInLastFrameShouldReturnResetResetEndGame()
+    {
+        int[] bowls = { 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1 };
+
+        foreach (int bowl in bowls)
+        {
+            this.actionController.Bowl(bowl);
+        }
+
+        Assert.AreEqual(ActionResponse.Reset, this.actionController.Bowl(10));
+        Assert.AreEqual(ActionResponse.Reset, this.actionController.Bowl(10));
+        Assert.AreEqual(ActionResponse.EndGame, this.actionController.Bowl(10));
+    }
 }
