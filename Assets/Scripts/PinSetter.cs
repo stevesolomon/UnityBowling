@@ -19,16 +19,24 @@ public class PinSetter : MonoBehaviour
 
     public int LastStandingCount { get; private set; }
 
+    private int LastSettledCount { get; set; }
+
     private List<Pin> Pins { get; set; } 
 
     private bool CanUpdatePins { get; set; }
 
     private float LastChangeTime { get; set; }
 
+    private ActionController ActionController { get; set; }
+
+    private Animator Animator { get; set; }
+
 	// Use this for initialization
 	void Start ()
     {
         Pins = GameObject.FindObjectsOfType<Pin>().ToList();
+        ActionController = new ActionController();
+        Animator = this.GetComponent<Animator>();
 
         InitializePinCounts();
 
@@ -95,6 +103,7 @@ public class PinSetter : MonoBehaviour
     {
         Pins = GameObject.FindObjectsOfType<Pin>().ToList();
         LastStandingCount = -1;
+        LastSettledCount = 10;
         CanUpdatePins = false;
 
         int standingPins = CountStandingPins();
@@ -141,9 +150,18 @@ public class PinSetter : MonoBehaviour
 
     private void PinsHaveSettled()
     {
+        int standingPins = CountStandingPins();
+        int pinsFallen = this.LastSettledCount - standingPins;
+        this.LastSettledCount = standingPins;
+
+        print(pinsFallen);
+
         LastStandingCount = -1;
         pinText.color = Color.green;
         this.CanUpdatePins = false;
+
+        var response = this.ActionController.Bowl(pinsFallen);
+        HandleResponse(response);
 
         this.ball.Reset();
     }
@@ -165,6 +183,20 @@ public class PinSetter : MonoBehaviour
         {
             this.Pins.Remove(pin);
             Destroy(collider.transform.parent.gameObject);            
+        }
+    }
+
+    private void HandleResponse(ActionResponse response)
+    {
+        switch (response)
+        {
+            case ActionResponse.Tidy:
+                this.Animator.SetTrigger("tidyPinsTrigger");
+                break;
+            case ActionResponse.Reset:
+            case ActionResponse.EndTurn:
+                this.Animator.SetTrigger("resetPinsTrigger");
+                break;
         }
     }
 }
