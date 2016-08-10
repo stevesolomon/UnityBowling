@@ -195,6 +195,7 @@ public class PinSetter : MonoBehaviour
                 break;
             case ActionResponse.Reset:
             case ActionResponse.EndTurn:
+                this.LastSettledCount = 10;
                 this.Animator.SetTrigger("resetPinsTrigger");
                 break;
         }
