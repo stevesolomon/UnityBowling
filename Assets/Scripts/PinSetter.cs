@@ -23,13 +23,13 @@ public class PinSetter : MonoBehaviour
 
     private List<Pin> Pins { get; set; } 
 
-    private bool CanUpdatePins { get; set; }
-
     private float LastChangeTime { get; set; }
 
     private ActionController ActionController { get; set; }
 
     private Animator Animator { get; set; }
+
+    public bool BallOutOfPlay { get; set; }
 
 	// Use this for initialization
 	void Start ()
@@ -49,7 +49,7 @@ public class PinSetter : MonoBehaviour
 	// Update is called once per frame
 	void Update ()
     {
-        if (CanUpdatePins)
+        if (BallOutOfPlay)
         {
             UpdatePinsStanding();
         }
@@ -104,7 +104,7 @@ public class PinSetter : MonoBehaviour
         Pins = GameObject.FindObjectsOfType<Pin>().ToList();
         LastStandingCount = -1;
         LastSettledCount = 10;
-        CanUpdatePins = false;
+        BallOutOfPlay = false;
 
         int standingPins = CountStandingPins();
         pinText.color = Color.green;
@@ -158,7 +158,7 @@ public class PinSetter : MonoBehaviour
 
         LastStandingCount = -1;
         pinText.color = Color.green;
-        this.CanUpdatePins = false;
+        this.BallOutOfPlay = false;
 
         var response = this.ActionController.Bowl(pinsFallen);
         HandleResponse(response);
@@ -170,7 +170,6 @@ public class PinSetter : MonoBehaviour
     {
         if (collider.gameObject.GetComponent<Ball>())
         {
-            CanUpdatePins = true;
             pinText.color = Color.red;
         }
     }
