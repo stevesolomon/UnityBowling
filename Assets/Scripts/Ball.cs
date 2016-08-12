@@ -28,13 +28,6 @@ public class Ball : MonoBehaviour
 
         this.OriginalPosition = this.transform.position; 
     }
-	
-	// Update is called once per frame
-	void Update ()
-    {
-	
-
-	}
 
     public void Launch(Vector3 launchVelocity)
     {
@@ -56,6 +49,7 @@ public class Ball : MonoBehaviour
         this.rigidbody.velocity = Vector3.zero;
         this.rigidbody.rotation = Quaternion.identity;
         this.rigidbody.useGravity = false;
+        this.rigidbody.angularVelocity = Vector3.zero;
     }
 
     public void MoveStartPosition(float amount)
