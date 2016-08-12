@@ -31,6 +31,7 @@ public class Pin : MonoBehaviour
     public void Raise(float distance)
     {
         this.transform.Translate(new Vector3(0f, distance, 0f), Space.World);
+        this.transform.rotation = Quaternion.identity;
         this.rigidbody.isKinematic = true;
     }
 
