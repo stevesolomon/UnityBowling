@@ -5,31 +5,19 @@ using UnityEngine.UI;
 
 public class PinSetter : MonoBehaviour
 {
-    private const string pinTextFormat = "{0} Pins Remaining";
-
-    public Text pinText;
-
-    public float settleTimeSeconds = 3f;
-
     public float distanceToRaise = 40f;
 
     public Ball ball;
 
     public GameObject pinSet;
 
-    public int LastStandingCount { get; private set; }
+    public PinCounter pinCounter;
 
-    private int LastSettledCount { get; set; }
-
-    private List<Pin> Pins { get; set; } 
-
-    private float LastChangeTime { get; set; }
+    private List<Pin> Pins { get; set; }     
 
     private ActionController ActionController { get; set; }
 
     private Animator Animator { get; set; }
-
-    public bool BallOutOfPlay { get; set; }
 
 	// Use this for initialization
 	void Start ()
@@ -38,22 +26,13 @@ public class PinSetter : MonoBehaviour
         ActionController = new ActionController();
         Animator = this.GetComponent<Animator>();
 
-        InitializePinCounts();
+        pinCounter = GameObject.FindObjectOfType<PinCounter>();
 
         if (ball == null)
         {
             this.ball = GameObject.FindObjectOfType<Ball>();
         }
     }
-	
-	// Update is called once per frame
-	void Update ()
-    {
-        if (BallOutOfPlay)
-        {
-            UpdatePinsStanding();
-        }
-	}
 
     /// <summary>
     /// Raises only the standing pins by distanceToRaise.
@@ -95,82 +74,28 @@ public class PinSetter : MonoBehaviour
         print("Renewing Pins");
 
         Instantiate(this.pinSet, new Vector3(0f, 40f, 1829f), Quaternion.identity);
-
-        InitializePinCounts();
     }
 
-    private void InitializePinCounts()
+    public void HandleResponse(ActionResponse response)
     {
-        Pins = GameObject.FindObjectsOfType<Pin>().ToList();
-        LastStandingCount = -1;
-        LastSettledCount = 10;
-        BallOutOfPlay = false;
-
-        int standingPins = CountStandingPins();
-        pinText.color = Color.green;
-        pinText.text = string.Format(pinTextFormat, standingPins);
-    }
-
-    private void UpdatePinsStanding()
-    {
-        int currentStanding = CountStandingPins();
-
-        // There has been a change...
-        if (currentStanding != LastStandingCount)
+        switch (response)
         {
-            LastChangeTime = Time.time;
-            LastStandingCount = currentStanding;
-
-            pinText.text = string.Format(pinTextFormat, currentStanding);
-
-            return;
+            case ActionResponse.Tidy:
+                this.Animator.SetTrigger("tidyPinsTrigger");
+                break;
+            case ActionResponse.Reset:
+            case ActionResponse.EndTurn:
+                this.pinCounter.LastSettledCount = 10;
+                this.Animator.SetTrigger("resetPinsTrigger");
+                break;
         }
-
-        // There has not been a change, let's see if we've waited long enough for a change...
-        if ((Time.time - LastChangeTime) > settleTimeSeconds)
-        {
-            PinsHaveSettled();
-        }        
-    }
-
-    private int CountStandingPins()
-    {
-        int pinsStanding = 0;
-
-        foreach (var pin in this.Pins)
-        {
-            if (pin.IsStanding())
-            {
-                pinsStanding++;
-            }
-        }
-
-        return pinsStanding;
-    }
-
-    private void PinsHaveSettled()
-    {
-        int standingPins = CountStandingPins();
-        int pinsFallen = this.LastSettledCount - standingPins;
-        this.LastSettledCount = standingPins;
-
-        print(pinsFallen);
-
-        LastStandingCount = -1;
-        pinText.color = Color.green;
-        this.BallOutOfPlay = false;
-
-        var response = this.ActionController.Bowl(pinsFallen);
-        HandleResponse(response);
-
-        this.ball.Reset();
     }
 
     void OnTriggerEnter(Collider collider)
     {
         if (collider.gameObject.GetComponent<Ball>())
         {
-            pinText.color = Color.red;
+            //pinText.color = Color.red;
         }
     }
 
@@ -183,20 +108,5 @@ public class PinSetter : MonoBehaviour
             this.Pins.Remove(pin);
             Destroy(collider.transform.parent.gameObject);            
         }
-    }
-
-    private void HandleResponse(ActionResponse response)
-    {
-        switch (response)
-        {
-            case ActionResponse.Tidy:
-                this.Animator.SetTrigger("tidyPinsTrigger");
-                break;
-            case ActionResponse.Reset:
-            case ActionResponse.EndTurn:
-                this.LastSettledCount = 10;
-                this.Animator.SetTrigger("resetPinsTrigger");
-                break;
-        }
-    }
+    }    
 }
