@@ -31,6 +31,8 @@ public class ScoreController
                 frameScores.Add(lastRoll + currRoll);
             }
 
+            //We're moving on to test strikes/spares. If we don't have at least one lookahead
+            //roll available we can't do any more scoring. We're done!
             if (rolls.Count() - i <= 1)
             {
                 break;
