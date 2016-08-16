@@ -10,7 +10,15 @@ public class ScoreDisplay : MonoBehaviour
 	// Use this for initialization
 	void Start ()
     {
-	
+	    foreach (var rollText in rollTexts)
+        {
+            rollText.text = "";
+        }
+
+        foreach (var frameScoreText in frameScoreTexts)
+        {
+            frameScoreText.text = "";
+        }
 	}
 	
 	// Update is called once per frame
