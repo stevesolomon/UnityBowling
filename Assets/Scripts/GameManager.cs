@@ -11,6 +11,10 @@ public class GameManager : MonoBehaviour
 
     private Ball ball;
 
+    private ScoreDisplay scoreDisplay;
+
+    private ScoreController scoreController;
+
 	// Use this for initialization
 	void Start ()
     {
@@ -19,6 +23,10 @@ public class GameManager : MonoBehaviour
 
         this.pinSetter = GameObject.FindObjectOfType<PinSetter>();
         this.ball = GameObject.FindObjectOfType<Ball>();
+
+        this.scoreDisplay = GameObject.FindObjectOfType<ScoreDisplay>();
+
+        this.scoreController = new ScoreController();
 	}
 
     public void Bowl(int pinsFallen)
@@ -28,6 +36,9 @@ public class GameManager : MonoBehaviour
         var response = this.actionController.Bowl(pinsFallen);
 
         pinSetter.HandleResponse(response);
+
+        this.scoreDisplay.FillRolls(rolls);
+        this.scoreDisplay.FillFrames(scoreController.FrameScores(rolls));
 
         this.ball.Reset();
     }

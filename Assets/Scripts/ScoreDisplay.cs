@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class ScoreDisplay : MonoBehaviour
@@ -21,9 +22,25 @@ public class ScoreDisplay : MonoBehaviour
         }
 	}
 	
-	// Update is called once per frame
-	void Update ()
+	public void FillFrames(IEnumerable<int> frames)
     {
-	
-	}
+        int i = 0;
+
+        foreach (var frame in frames)
+        {
+            frameScoreTexts[i].text = frame.ToString();
+            i++;
+        }
+    }
+
+    public void FillRolls(IEnumerable<int> rolls)
+    {
+        int i = 0;
+
+        foreach (var roll in rolls)
+        {
+            rollTexts[i].text = roll.ToString();
+            i++;
+        }
+    }
 }
