@@ -50,6 +50,11 @@ public class PinCounter : MonoBehaviour
         }
     }
 
+    public void RenewedPins(List<Pin> pins)
+    {
+        Pins = pins;
+    }
+
     private int CountStandingPins()
     {
         int pinsStanding = 0;
