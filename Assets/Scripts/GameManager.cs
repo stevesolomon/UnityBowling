@@ -38,7 +38,7 @@ public class GameManager : MonoBehaviour
         pinSetter.HandleResponse(response);
 
         this.scoreDisplay.FillRolls(rolls);
-        this.scoreDisplay.FillFrames(scoreController.FrameScores(rolls));
+        this.scoreDisplay.FillFrames(scoreController.CumulativeScores(rolls));
 
         this.ball.Reset();
     }
