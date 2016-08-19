@@ -19,6 +19,17 @@ public class DragLaunch : MonoBehaviour
 
     public void MoveStart(float amount)
     {
+        float xPos = this.ball.transform.position.x + amount;
+
+        if (xPos < -50f)
+        {
+            amount = -50f - this.ball.transform.position.x;
+        }
+        else if (xPos > 50f)
+        {
+            amount = 50f - this.ball.transform.position.x;
+        }
+
         this.ball.MoveStartPosition(amount);
     }
 	
