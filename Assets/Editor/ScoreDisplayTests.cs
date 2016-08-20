@@ -52,4 +52,14 @@ public class ScoreDisplayTests
 
         Assert.AreEqual(expected, actual);
     }
+
+    [Test]
+    public void BowlStrikeThenSpareInLastFrame()
+    {
+        int[] rolls = { 8, 2, 8, 1, 9, 1, 7, 1, 8, 2, 9, 1, 9, 1, 10, 10, 9, 1 };
+        string expected = "8/819/718/9/9/X X 9/";
+        string actual = ScoreDisplay.FormatRollsForDisplay(rolls.ToList());
+
+        Assert.AreEqual(expected, actual);
+    }
 }
